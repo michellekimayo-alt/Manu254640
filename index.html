@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emmanuel's Page — Support Me</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/intasend-inlinejs-sdk@3.0.4/build/intasend-inline.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #fdf6ec;
+    --warm1: #f5e6d0;
+    --warm2: #edd5b3;
+    --brown: #5c3317;
+    --brown-light: #8b5e3c;
+    --orange: #d4651a;
+    --green: #2d6a4f;
+    --green-light: #52b788;
+    --text: #2c1810;
+    --muted: #9b7b5e;
+    --shadow: 0 8px 40px rgba(92,51,23,0.13);
+    --shadow-lg: 0 20px 60px rgba(92,51,23,0.18);
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--cream);
+    background-image:
+      radial-gradient(ellipse 70% 50% at 90% 0%, #fde8cc 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 0% 100%, #d8f3e4 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 50% 50%, #fff8f0 0%, transparent 80%);
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .particle {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0;
+    animation: float-up linear infinite;
+    font-size: 20px;
+    z-index: 0;
+  }
+  @keyframes float-up {
+    0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-10vh) rotate(360deg); }
+  }
+
+  .wrapper { width: 100%; max-width: 460px; position: relative; z-index: 1; }
+
+  .page { display: none; flex-direction: column; align-items: center; gap: 20px; }
+  .page.active { display: flex; animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(32px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .top-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1.5px solid var(--warm2); border-radius: 50px;
+    padding: 8px 18px; font-size: 12px; font-weight: 600; color: var(--brown-light);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    box-shadow: 0 2px 12px rgba(92,51,23,0.08);
+  }
+  .top-badge .dot {
+    width: 7px; height: 7px; background: var(--green-light); border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+  }
+
+  .main-card {
+    background: white; border-radius: 28px; padding: 40px 36px;
+    box-shadow: var(--shadow-lg); width: 100%; text-align: center;
+    border: 1.5px solid rgba(237,213,179,0.6); position: relative; overflow: hidden;
+  }
+  .main-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--green-light), var(--orange));
+    background-size: 200% 100%; animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+
+  .avatar-wrap { position: relative; display: inline-block; margin-bottom: 24px; }
+  .avatar {
+    width: 88px; height: 88px;
+    background: linear-gradient(135deg, var(--warm1), var(--warm2));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 44px; border: 3px solid white;
+    box-shadow: 0 4px 20px rgba(92,51,23,0.15);
+    animation: bob 3s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .avatar-ring {
+    position: absolute; inset: -6px; border-radius: 50%;
+    border: 2px dashed var(--warm2); animation: spin-slow 12s linear infinite;
+  }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+  .card-name { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900; color: var(--brown); margin-bottom: 6px; line-height: 1.1; }
+  .card-tagline { font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 24px; letter-spacing: 0.04em; }
+  .divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--orange), var(--green-light)); border-radius: 2px; margin: 0 auto 24px; }
+
+  .message-box {
+    background: var(--cream); border: 1.5px solid var(--warm2); border-radius: 16px;
+    padding: 20px 22px; margin-bottom: 28px; text-align: left; position: relative;
+  }
+  .message-box::before {
+    content: '"'; position: absolute; top: -2px; left: 14px;
+    font-family: 'Playfair Display', serif; font-size: 52px; color: var(--warm2); line-height: 1;
+  }
+  .message-box p { font-size: 15px; line-height: 1.75; color: var(--text); padding-top: 16px; }
+  .message-box p strong { color: var(--brown); font-weight: 700; }
+
+  .meals { display: flex; justify-content: center; gap: 16px; margin-bottom: 28px; }
+  .meal-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--cream); border: 1.5px solid var(--warm2); border-radius: 50px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--brown-light);
+  }
+
+  .btn-row { display: flex; gap: 14px; justify-content: center; }
+  .btn {
+    padding: 15px 40px; border: none; border-radius: 50px;
+    font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); letter-spacing: 0.03em;
+  }
+  .btn-yes { background: linear-gradient(135deg, #2d6a4f, #52b788); color: white; box-shadow: 0 6px 24px rgba(45,106,79,0.35); }
+  .btn-yes:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 32px rgba(45,106,79,0.45); }
+  .btn-yes:active { transform: scale(0.96); }
+  .btn-no { background: var(--warm1); color: var(--muted); box-shadow: none; cursor: default; }
+  .btn-no:hover { background: var(--warm2); }
+
+  .thank-header { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--green); margin-bottom: 8px; }
+  .thank-sub { font-size: 15px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+
+  .amount-label { font-size: 12px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; text-align: left; }
+  .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .amount-chip {
+    background: var(--cream); border: 2px solid var(--warm2); border-radius: 12px;
+    padding: 12px 8px; font-size: 15px; font-weight: 700; color: var(--brown);
+    cursor: pointer; transition: all 0.18s ease; text-align: center;
+  }
+  .amount-chip:hover { border-color: var(--green-light); background: #edfaf3; }
+  .amount-chip.selected {
+    background: linear-gradient(135deg, #edfaf3, #d8f3e4); border-color: var(--green);
+    color: var(--green); box-shadow: 0 3px 12px rgba(45,106,79,0.18); transform: scale(1.04);
+  }
+  .amount-chip .sub { font-size: 11px; font-weight: 500; color: var(--muted); display: block; margin-top: 2px; }
+  .amount-chip.selected .sub { color: var(--green); }
+
+  .custom-amount-wrap { position: relative; margin-bottom: 20px; }
+  .custom-amount-wrap .prefix { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 14px; font-weight: 700; color: var(--brown-light); }
+  .custom-input {
+    width: 100%; background: var(--cream); border: 2px solid var(--warm2); border-radius: 12px;
+    padding: 13px 16px 13px 52px; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    font-weight: 600; color: var(--text); outline: none; transition: border-color 0.2s;
+  }
+  .custom-input:focus { border-color: var(--green-light); }
+  .custom-input::placeholder { color: #c0a890; font-weight: 400; }
+
+  .phone-label { font-size: 12px; font-weight: 700; color: var(--brown-light); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; text-align: left; }
+  .phone-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .phone-flag {
+    background: var(--cream); border: 2px solid var(--warm2); border-radius: 12px;
+    padding: 13px 14px; font-size: 14px; font-weight: 600; color: var(--brown-light);
+    white-space: nowrap; display: flex; align-items: center; gap: 6px;
+  }
+  .phone-input {
+    flex: 1; background: var(--cream); border: 2px solid var(--warm2); border-radius: 12px;
+    padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    font-weight: 600; color: var(--text); outline: none; transition: border-color 0.2s;
+  }
+  .phone-input:focus { border-color: var(--green-light); }
+  .phone-input::placeholder { color: #c0a890; font-weight: 400; }
+
+  .btn-pay {
+    width: 100%; background: linear-gradient(135deg, #17ab13, #2d9e28); color: white;
+    border: none; border-radius: 14px; padding: 17px; font-family: 'DM Sans', sans-serif;
+    font-size: 17px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 6px 28px rgba(23,171,19,0.30);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: 0.02em; margin-bottom: 14px;
+  }
+  .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(23,171,19,0.40); }
+  .btn-pay:active { transform: scale(0.97); }
+  .btn-pay:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; transform: none; }
+  .mpesa-badge { background: white; color: #17ab13; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.08em; }
+
+  .security-note { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: var(--muted); }
+
+  .back-link { font-size: 13px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s; }
+  .back-link:hover { color: var(--brown); }
+
+  .success-emoji { font-size: 72px; animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; display: block; margin-bottom: 20px; }
+  @keyframes pop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+
+  .footer-text { font-size: 12px; color: var(--muted); text-align: center; opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<div class="particle" style="left:10%;animation-duration:12s;animation-delay:0s">🙏</div>
+<div class="particle" style="left:25%;animation-duration:15s;animation-delay:3s">❤️</div>
+<div class="particle" style="left:50%;animation-duration:10s;animation-delay:6s">✨</div>
+<div class="particle" style="left:70%;animation-duration:14s;animation-delay:1s">🌿</div>
+<div class="particle" style="left:85%;animation-duration:11s;animation-delay:8s">🕊️</div>
+
+<div class="wrapper">
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <div class="top-badge"><div class="dot"></div>Emmanuel's First Website</div>
+    <div class="main-card">
+      <div class="avatar-wrap">
+        <div class="avatar">🙏</div>
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="card-name">Hi, I'm Emmanuel</div>
+      <div class="card-tagline">Nakuru, Kenya · Seeking kindness 🌿</div>
+      <div class="divider"></div>
+      <div class="message-box">
+        <p>
+          I am going through a <strong>financial crisis</strong> right now.<br><br>
+          This is my first ever website. If you'd like to support me with
+          <strong>lunch and supper</strong> today, please press <strong>Yes</strong> below.
+          Every little bit means so much. 🙏
+        </p>
+      </div>
+      <div class="meals">
+        <div class="meal-pill">🍽️ Lunch</div>
+        <div class="meal-pill">🌙 Supper</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-yes" onclick="goToPage2()">YES, I'll Help ❤️</button>
+        <button class="btn btn-no">No</button>
+      </div>
+    </div>
+    <div class="footer-text">Pressing No does nothing &nbsp;·&nbsp; Only YES proceeds</div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <div class="top-badge"><div class="dot"></div>Support Emmanuel</div>
+    <div class="main-card">
+      <div style="font-size:48px;margin-bottom:16px;animation:bob 3s ease-in-out infinite">😊</div>
+      <div class="thank-header">Thank you so much!</div>
+      <div class="thank-sub">Your generosity means everything. Choose how much you'd like to send via M-Pesa:</div>
+
+      <div class="amount-label">Choose Amount (KSh)</div>
+      <div class="amount-grid">
+        <div class="amount-chip" onclick="selectAmount(50, this)">KSh 50<span class="sub">Small snack</span></div>
+        <div class="amount-chip selected" onclick="selectAmount(100, this)">KSh 100<span class="sub">Lunch 🍽️</span></div>
+        <div class="amount-chip" onclick="selectAmount(200, this)">KSh 200<span class="sub">Lunch + Supper</span></div>
+        <div class="amount-chip" onclick="selectAmount(500, this)">KSh 500<span class="sub">Full day + more</span></div>
+        <div class="amount-chip" onclick="selectAmount(1000, this)">KSh 1,000<span class="sub">Big blessing 🙏</span></div>
+        <div class="amount-chip" onclick="selectAmount(0, this)" id="customChip">Custom<span class="sub">Enter below</span></div>
+      </div>
+
+      <div class="custom-amount-wrap">
+        <span class="prefix">KSh</span>
+        <input type="number" class="custom-input" id="customAmountInput" placeholder="Or type your own amount..." oninput="onCustomInput(this.value)">
+      </div>
+
+      <div class="phone-label">📱 Your M-Pesa Number</div>
+      <div class="phone-row">
+        <div class="phone-flag">🇰🇪 +254</div>
+        <input type="tel" class="phone-input" id="mpesaPhone" placeholder="712 345 678" maxlength="9">
+      </div>
+
+      <button class="btn-pay" id="payBtn" onclick="payNow()">
+        <span class="mpesa-badge">M-PESA</span>
+        Pay <span id="payAmountLabel">KSh 100</span> Now
+      </button>
+      <div class="security-note">🔒 Secure STK Push · You'll enter your PIN on your phone</div>
+    </div>
+    <span class="back-link" onclick="goBack()">← Go back</span>
+    <div class="footer-text">God bless you for your kindness 🙏</div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page3">
+    <div class="confetti-wrap" id="confettiWrap"></div>
+    <div class="top-badge"><div class="dot"></div>Payment Confirmed</div>
+    <div class="main-card">
+      <span class="success-emoji">🎉</span>
+      <div class="thank-header" style="color:var(--green);font-size:32px;">Payment Received!</div>
+      <div class="thank-sub" style="margin-top:12px;">
+        You just put food on Emmanuel's table today.<br>
+        <strong style="color:var(--brown)">May God bless you abundantly.</strong> 🙏
+      </div>
+      <div class="divider"></div>
+      <div style="background:var(--cream);border-radius:14px;padding:18px;margin-top:8px;">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Amount Sent</div>
+        <div id="successAmount" style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--green)">KSh 100</div>
+      </div>
+    </div>
+    <div class="footer-text">Thank you from the bottom of my heart ❤️</div>
+  </div>
+
+</div>
+
+<script>
+  let selectedAmount = 100;
+
+  function goToPage2() { switchPage('page1', 'page2'); }
+  function goBack() { switchPage('page2', 'page1'); }
+
+  function switchPage(from, to) {
+    document.getElementById(from).classList.remove('active');
+    setTimeout(() => {
+      document.getElementById(to).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 50);
+  }
+
+  function selectAmount(amount, el) {
+    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    if (amount > 0) {
+      selectedAmount = amount;
+      document.getElementById('customAmountInput').value = '';
+    }
+    updatePayLabel();
+  }
+
+  function onCustomInput(val) {
+    const n = parseInt(val);
+    if (n > 0) {
+      selectedAmount = n;
+      document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
+      document.getElementById('customChip').classList.add('selected');
+      updatePayLabel();
+    }
+  }
+
+  function updatePayLabel() {
+    document.getElementById('payAmountLabel').textContent = 'KSh ' + selectedAmount.toLocaleString();
+  }
+
+  function payNow() {
+    const phoneRaw = document.getElementById('mpesaPhone').value.trim().replace(/\s/g, '');
+    const btn = document.getElementById('payBtn');
+
+    if (!phoneRaw || phoneRaw.length < 9) {
+      alert('Please enter your M-Pesa phone number (9 digits after +254)');
+      return;
+    }
+    if (!selectedAmount || selectedAmount < 10) {
+      alert('Minimum amount is KSh 10. Please enter a valid amount.');
+      return;
+    }
+
+    const fullPhone = '254' + phoneRaw.replace(/^0/, '');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Sending STK Push to your phone...';
+
+    const intaSend = new window.IntaSend({
+      publicAPIKey: "ISPubKey_live_c95820d3-e0e0-4553-bd1e-46591823be14",
+      live: true
+    });
+
+    intaSend
+      .on("COMPLETE", () => {
+        document.getElementById('successAmount').textContent = 'KSh ' + selectedAmount.toLocaleString();
+        switchPage('page2', 'page3');
+        launchConfetti();
+      })
+      .on("FAILED", () => {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="mpesa-badge">M-PESA</span> Pay KSh ${selectedAmount.toLocaleString()} Now`;
+        alert('Payment was cancelled or failed. Please try again.');
+      })
+      .on("IN-PROGRESS", () => {
+        btn.innerHTML = '⏳ Waiting for your PIN...';
+      });
+
+    intaSend.run({
+      amount: selectedAmount,
+      currency: "KES",
+      phone_number: fullPhone,
+      comment: "Support Emmanuel — food donation",
+      payment_method: "M-PESA"
+    });
+  }
+
+  function launchConfetti() {
+    const wrap = document.getElementById('confettiWrap');
+    const emojis = ['🎉','❤️','🙏','✨','🌿','😊','💚'];
+    for (let i = 0; i < 30; i++) {
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position:absolute; left:${Math.random()*100}%; top:${Math.random()*100}%;
+        font-size:${20+Math.random()*24}px;
+        animation: confettiFall ${1.5+Math.random()*2}s ease forwards;
+        animation-delay:${Math.random()*0.8}s; opacity:0;
+      `;
+      el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      wrap.appendChild(el);
+    }
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes confettiFall {
+        0% { opacity:1; transform: translateY(-20px) rotate(0deg) scale(0.5); }
+        100% { opacity:0; transform: translateY(80px) rotate(360deg) scale(1.2); }
+      }
+    `;
+    document.head.appendChild(style);
+    setTimeout(() => { wrap.innerHTML = ''; }, 5000);
+  }
+</script>
+</body>
+</html>
